@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 
 
-public class TestPutBoard extends Utils {
+public class TestPutBoard extends BaseTest {
 
-    public static final String boardId = "CcmMrthl";
+    public static final String boardId = "MYrIEEMH";
 
 
 
@@ -31,7 +31,7 @@ public class TestPutBoard extends Utils {
         boardName = json.getString("name");
         boardDescription = json.getString("desc");
 
-        Assertions.assertEquals(boardDescription, "Board testing PUT");
+        Assertions.assertEquals("Board testing PUT", boardDescription);
 
         System.out.println("Board ID: " + id + "\n" + "Board Name: " + boardName + "\n" + "Board description: " + boardDescription);
         System.out.println("Status Code: " + response.statusCode());

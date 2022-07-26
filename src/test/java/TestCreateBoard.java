@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class TestCreateBoard extends Utils {
+public class TestCreateBoard extends BaseTest {
 
 
     @Test
