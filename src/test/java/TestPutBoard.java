@@ -1,26 +1,42 @@
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.testng.annotations.Test;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
-public class TestPutBoard {
+
+public class TestPutBoard extends Utils {
+
+    public static final String boardId = "CcmMrthl";
+
+
 
     @Test
-    public void testPut(){
-        RestAssured.baseURI = "https://api.trello.com";
-        given().log().all().queryParam("key", "80c7807cd589566a018e51c3e1d911b8")
-                .queryParam("token", "893e8772811a373d58941385e7dbcf078aed468bdfcc3d928cc17fdb898ff85d")
-                .queryParam("desc", "New testing board testing PUT")
-                .contentType(ContentType.JSON)
-                .when().put("/1/boards/9r5rRtNU")
-                .then().log().body().assertThat().statusCode(200);
+    public void testPut() {
 
-        System.out.println("Response Status Code: " + get().statusCode());
+        Response response = given()
+                .spec(reqSpec)
+                .queryParam("desc", "Board testing PUT")
+                .when()
+                .put(boardId)
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        JsonPath json = response.jsonPath();
+        id = json.getString("id");
+        boardName = json.getString("name");
+        boardDescription = json.getString("desc");
+
+        Assertions.assertEquals(boardDescription, "Board testing PUT");
+
+        System.out.println("Board ID: " + id + "\n" + "Board Name: " + boardName + "\n" + "Board description: " + boardDescription);
+        System.out.println("Status Code: " + response.statusCode());
+
     }
-
-
 
 
 }
