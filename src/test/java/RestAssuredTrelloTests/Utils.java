@@ -1,3 +1,4 @@
+package RestAssuredTrelloTests;
 
 public class Utils {
 
