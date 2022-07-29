@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 
 public class TestDeleteBoard extends BaseTest {
 
-    public static final String boardId = "MYrIEEMH";
+    public static final String boardId = "5mV7ac2i";
 
 
     @Test
