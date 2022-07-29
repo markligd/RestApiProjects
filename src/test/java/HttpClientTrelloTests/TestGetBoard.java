@@ -5,6 +5,7 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 public class TestGetBoard extends BaseTestHttpClient {
 
-    public static final String boardId = "ZLDQpn1L";
+    public static final String boardId = "r9puEYA5";
 
 
     @Test
@@ -25,15 +26,18 @@ public class TestGetBoard extends BaseTestHttpClient {
                 .addParameter("key", Utils.KEY)
                 .addParameter("token", Utils.TOKEN)
                 .build();
-
         httpGet.setURI(uri);
         httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         response = client.execute(httpGet);
 
         String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-        System.out.println("Response body: " + responseBody);
+        JSONObject jsonObj = new JSONObject(responseBody);
+        System.out.println("Id of a Board: " + jsonObj.getString("id"));
+        System.out.println("Name of a Board: " + jsonObj.getString("name"));
+        System.out.println("Description of a Board: " + jsonObj.getString("desc"));
 
-        Assert.assertEquals(response.getStatusLine().getStatusCode(), 200);
+
+        Assert.assertEquals(200, response.getStatusLine().getStatusCode());
         client.close();
 
     }
