@@ -1,6 +1,6 @@
-package RetrofitTrelloTests;
+package JavaTests;
 
-public class BoardForTests {
+public class Board {
     private String name;
     private String desc;
     private Boolean closed;

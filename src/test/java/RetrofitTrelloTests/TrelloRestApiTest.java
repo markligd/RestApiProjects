@@ -1,69 +1,33 @@
 package RetrofitTrelloTests;
 
-import okhttp3.OkHttpClient;
-import org.testng.annotations.BeforeClass;
+import JavaTests.Board;
 import org.testng.annotations.Test;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
-public class TrelloRestApiTest {
-
-    String key;
-    String token;
-    Retrofit retrofit;
-    List<String> idListOfCreatedBoards;
-
-    @BeforeClass
-    public void init() {
-
-        idListOfCreatedBoards = new ArrayList<>();
-        Properties properties = new Properties();
-        String pathToFile = "src/main/resources/trello.properties";
-
-        try {
-            properties.load(new FileInputStream(pathToFile));
-            key = properties.getProperty("key");
-            token = properties.getProperty("token");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://trello.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-    }
+public class TrelloRestApiTest extends BaseTestRetrofit{
 
     @Test
     public void creatingNewBoardTest() throws IOException {
 
-        BoardForTests board = new BoardForTests();
-        board.setName("NewRETROFIT");
+        Board board = new Board();
+        board.setName("NewRETROFITf");
         board.setDesc("This is new board!");
         board.setClosed(false);
 
         BoardService service = retrofit.create(BoardService.class);
-        Call<BoardForTests> callSync = service.putBoard(key, token, board);
+        Call<Board> callSync = service.putBoard(key, token, board);
 
-        Response<BoardForTests> response = callSync.execute();
-        BoardForTests createdBoard = response.body();
+        Response<Board> response = callSync.execute();
+        Board createdBoard = response.body();
 
-        if (createdBoard != null) {
-            idListOfCreatedBoards.add(createdBoard.getId());
-        }
+        assertNotEquals(createdBoard, null);
 
         assertEquals(response.code(), 200);
         assertThat(createdBoard).hasFieldOrPropertyWithValue("name", board.getName())
